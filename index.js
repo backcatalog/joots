@@ -55,3 +55,5 @@ const oidOr = exports.oidOr = (value, altProperty = 'username') => {
         return {[altProperty]: value};
     }
 };
+
+const isDefined = exports.isDefined = variable => typeof variable !== 'undefined';
