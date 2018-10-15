@@ -8,6 +8,18 @@ const merge = exports.merge = (object1, object2) => {
     return object1;
 };
 
+const dedupe = exports.dedupe = (array) => {
+    return array.filter((value, index, self) => self.indexOf(value) === index);
+};
+
+const differ = exports.differ = (haystack, needles) => {
+    return haystack.filter(value => !needles.includes(value));
+};
+
+const forEach = exports.forEach = (array, callback, _this) => {
+    for(let i = 0; i < array.length; i++) callback.call(_this, array[i], i);
+};
+
 const cleanObject = exports.cleanObject = (obj, safeKeys) => {
     let output = {};
 
