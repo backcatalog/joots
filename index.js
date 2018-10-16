@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 const merge = exports.merge = (object1, object2) => {
@@ -18,6 +19,10 @@ const differ = exports.differ = (haystack, needles) => {
 
 const forEach = exports.forEach = (array, callback, _this) => {
     for(let i = 0; i < array.length; i++) callback.call(_this, array[i], i);
+};
+
+const createHash = exports.createHash = (buffer, hash, digest) => {
+    return crypto.createHash(hash || 'sha256').update(buffer).digest(digest || 'hex');
 };
 
 const cleanObject = exports.cleanObject = (obj, safeKeys) => {
