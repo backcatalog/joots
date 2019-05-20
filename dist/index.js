@@ -72,7 +72,12 @@ function assembleQuery(reqQuery) {
 }
 exports.assembleQuery = assembleQuery;
 function oidOr(param, altProperty = "username") {
-    return { $or: [{ _id: param }, { [altProperty]: param }] };
+    if (/^[a-fA-F0-9]{24}$/.test(param)) {
+        return { $or: [{ _id: param }, { [altProperty]: param }] };
+    }
+    else {
+        return { [altProperty]: param };
+    }
 }
 exports.oidOr = oidOr;
 function isDefined(property) {
