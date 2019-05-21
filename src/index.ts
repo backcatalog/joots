@@ -1,4 +1,4 @@
-import crypto, { HexBase64Latin1Encoding } from "crypto";
+import crypto, { HexBase64Latin1Encoding, BinaryLike } from "crypto";
 import bcrypt from "bcryptjs";
 
 export function merge(object1: any, object2: any) {
@@ -16,7 +16,7 @@ export function dedupe(array: Array<any>) {
 }
 
 export function differ(haystack: Array<any>, needles: Array<any>) {
-    return haystack.filter(value => !needles.includes(value));
+    return haystack.filter((value) => !needles.includes(value));
 }
 
 export function forEach(array: Array<any>, callback: any, _this: any) {
@@ -24,14 +24,14 @@ export function forEach(array: Array<any>, callback: any, _this: any) {
 }
 
 export function createHash(
-    buffer: Buffer,
-    hash: string,
-    digest: HexBase64Latin1Encoding
+    buffer: BinaryLike,
+    algorithm: string,
+    encoding: HexBase64Latin1Encoding
 ) {
     return crypto
-        .createHash(hash || "sha256")
+        .createHash(algorithm || "sha256")
         .update(buffer)
-        .digest(digest || "hex");
+        .digest(encoding || "hex");
 }
 
 export function cleanObject(obj: any, safeKeys: Array<string>) {
@@ -46,8 +46,28 @@ export function cleanObject(obj: any, safeKeys: Array<string>) {
     return output;
 }
 
-export function verifyPassword(input: string, actual: string, callback: any) {
-    bcrypt.compare(input, actual, (err: Error, isMatch: boolean) => {
+export function hashString({
+    rounds = 10,
+    unhashed,
+    callback,
+}: {
+    rounds?: number;
+    unhashed: string;
+    callback: (err: any, hashed?: string) => any;
+}) {
+    bcrypt.genSalt(rounds, (err, salt) => {
+        if (err) return callback(err);
+
+        bcrypt.hash(unhashed, salt, (err, hashed) => {
+            if (err) return callback(err);
+
+            return callback(null, hashed);
+        });
+    });
+}
+
+export function verifyPassword(input: string, hashed: string, callback: any) {
+    bcrypt.compare(input, hashed, (err: Error, isMatch: boolean) => {
         if (err) return callback(err);
 
         return callback(null, isMatch);

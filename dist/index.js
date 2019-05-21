@@ -19,7 +19,7 @@ function dedupe(array) {
 }
 exports.dedupe = dedupe;
 function differ(haystack, needles) {
-    return haystack.filter(value => !needles.includes(value));
+    return haystack.filter((value) => !needles.includes(value));
 }
 exports.differ = differ;
 function forEach(array, callback, _this) {
@@ -27,11 +27,11 @@ function forEach(array, callback, _this) {
         callback.call(_this, array[i], i);
 }
 exports.forEach = forEach;
-function createHash(buffer, hash, digest) {
+function createHash(buffer, algorithm, encoding) {
     return crypto_1.default
-        .createHash(hash || "sha256")
+        .createHash(algorithm || "sha256")
         .update(buffer)
-        .digest(digest || "hex");
+        .digest(encoding || "hex");
 }
 exports.createHash = createHash;
 function cleanObject(obj, safeKeys) {
@@ -44,8 +44,20 @@ function cleanObject(obj, safeKeys) {
     return output;
 }
 exports.cleanObject = cleanObject;
-function verifyPassword(input, actual, callback) {
-    bcryptjs_1.default.compare(input, actual, (err, isMatch) => {
+function hashString({ rounds = 10, unhashed, callback, }) {
+    bcryptjs_1.default.genSalt(rounds, (err, salt) => {
+        if (err)
+            return callback(err);
+        bcryptjs_1.default.hash(unhashed, salt, (err, hashed) => {
+            if (err)
+                return callback(err);
+            return callback(null, hashed);
+        });
+    });
+}
+exports.hashString = hashString;
+function verifyPassword(input, hashed, callback) {
+    bcryptjs_1.default.compare(input, hashed, (err, isMatch) => {
         if (err)
             return callback(err);
         return callback(null, isMatch);
