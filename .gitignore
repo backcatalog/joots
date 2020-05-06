@@ -10,3 +10,4 @@ node_modules/
 
 # Etcetera
 .env
+*.tsbuildinfo
