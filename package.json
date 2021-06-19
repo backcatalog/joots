@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
-    "@types/node": "^13.13.5"
+    "@types/node": "^14.14.22"
   }
 }

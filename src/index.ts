@@ -1,4 +1,4 @@
-import crypto, { HexBase64Latin1Encoding, BinaryLike } from "crypto";
+import crypto, { BinaryToTextEncoding, BinaryLike } from "crypto";
 import bcrypt from "bcryptjs";
 
 /**
@@ -53,7 +53,7 @@ export function cleanObject(
 export function createHash(
   buffer: BinaryLike,
   algorithm?: string,
-  encoding?: HexBase64Latin1Encoding
+  encoding?: BinaryToTextEncoding
 ) {
   return crypto
     .createHash(algorithm || "sha256")

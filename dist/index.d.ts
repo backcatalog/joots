@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { HexBase64Latin1Encoding, BinaryLike } from "crypto";
+import { BinaryToTextEncoding, BinaryLike } from "crypto";
 /**
  * Removes duplicates from a given `array`.
  *
@@ -29,7 +29,7 @@ export declare function cleanObject(object: Record<string, any>, safeKeys: Array
  * @param algorithm
  * @param encoding
  */
-export declare function createHash(buffer: BinaryLike, algorithm?: string, encoding?: HexBase64Latin1Encoding): string;
+export declare function createHash(buffer: BinaryLike, algorithm?: string, encoding?: BinaryToTextEncoding): string;
 /**
  * Salts and hashes an `unhashed` string.
  *
